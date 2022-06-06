@@ -1,0 +1,38 @@
+version: "3.3"
+
+services:
+
+  postgres:
+    image: postgres:13.1-alpine
+    volumes:
+      - graphics-app-postgres:/var/lib/postgresql/data
+    networks:
+      - graphics-network
+    environment:
+      - POSTGRES_PASSWORD=local-password
+      - POSTGRES_DB=graphics
+
+  backend:
+    build:
+        context: .
+        target: dev
+    command: /app
+    environment:
+      - POSTGRES_URL=psql://postgres:local-password@postgres/graphics
+    networks:
+      - graphics-network
+    expose:
+      - "50051"
+    ports:
+      - "50051:50051"
+    depends_on:
+      - postgres
+    volumes:
+      - cert-cache:/etc/ssl/certs/
+
+networks:
+  graphics-network:
+
+volumes:
+  graphics-app-postgres:
+  cert-cache:

@@ -1,0 +1,41 @@
+syntax = "proto3";
+option go_package = "messages/;messages";
+
+
+message User {
+	uint64 id = 1;
+	string provider = 2;
+	bool is_demo = 3;
+}
+
+message Kernel {
+	float row_one_col_one = 1;
+	float row_one_col_two = 2;
+	float row_one_col_three = 3;
+	float row_two_col_one = 4;
+	float row_two_col_two = 5;
+	float row_two_col_three = 6;
+	float row_three_col_one = 7;
+	float row_three_col_two = 8;
+	float row_three_col_three = 9;
+}
+
+message ImageRequest {
+	User user = 1;
+	bytes image = 2;
+	Kernel kernel = 3;
+
+}
+
+message ImageResponse {
+	bytes image = 1;
+}
+
+service ImageService {
+	rpc ApplyCustomFilter(ImageRequest) returns (ImageResponse) {};
+	rpc ApplyGaussianBlurFilter(ImageRequest) returns (ImageResponse) {};
+	rpc ApplyBoxBlurFilter(ImageRequest) returns (ImageResponse) {};
+	rpc ApplyEdgeDetectionFilter(ImageRequest) returns (ImageResponse) {};
+	rpc ApplySharpenFilter(ImageRequest) returns (ImageResponse) {};
+	rpc ApplyNegative(ImageRequest) returns (ImageResponse) {};
+}
